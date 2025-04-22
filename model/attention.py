@@ -15,6 +15,10 @@ def attention(Q, K, V, mask=None, dropout=None):
         scores = scores.masked_fill(mask == 0, -1e9)
     
     attention_coeffs = F.softmax(scores, dim=-1) 
+
+    if dropout is not None:
+        attention_coeffs = dropout(attention_coeffs)
+    
     return attention_coeffs @ V, attention_coeffs
 
 class MultiHeadAttention(nn.Module):
